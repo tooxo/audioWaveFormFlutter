@@ -1,0 +1,42 @@
+jobs:
+  include:
+    - os: linux
+      name: android
+      if: branch = master
+      dist: bionic
+      language: java
+      jdk: oraclejdk11
+      env:
+        - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
+      before_install:
+        - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
+        - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
+        - export PATH=$PATH:$HOME/sdk/tools/bin
+        - export ANDROID_HOME=$HOME/sdk
+        - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
+        - yes | sdkmanager --licenses --sdk_root="${ANDROID_HOME}"
+        - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+        - export PATH=$PATH:$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/build-tools/28.0.3/
+        - flutter doctor
+      script:
+        - cd example/
+        - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+        - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+    - os: osx
+      name: apple
+      if: branch = master
+      osx_image: xcode11.5
+      addons:
+        homebrew:
+          packages:
+            - usbmuxd
+            - libimobiledevice
+            - ideviceinstaller
+            - ios-deploy
+      before_install:
+        - brew unlink usbmuxd
+        - brew link usbmuxd
+        - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+      script:
+        - cd example/
+        - flutter/bin/flutter build ios --release --no-codesign
