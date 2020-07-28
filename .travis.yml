@@ -33,6 +33,7 @@ jobs:
             - libimobiledevice
             - ideviceinstaller
             - ios-deploy
+            - libffi
       before_install:
         - brew unlink usbmuxd
         - brew link usbmuxd
