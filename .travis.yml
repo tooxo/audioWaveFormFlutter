@@ -39,4 +39,4 @@ jobs:
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
       script:
         - cd example/
-        - flutter/bin/flutter build ios --release --no-codesign
+        - ../flutter/bin/flutter build ios --release --no-codesign
