@@ -29,7 +29,7 @@ jobs:
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
         - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
         - flutter emulator --create
-        - flutter emulator --launch flutter_emulator
+        - flutter emulator --launch test
         - flutter drive
     - os: osx
       name: apple
