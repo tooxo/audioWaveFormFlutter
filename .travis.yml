@@ -56,9 +56,9 @@ jobs:
         - cd example/
         - ../flutter/bin/flutter build ios --debug --no-codesign
         - ls build/ios/iphoneos/
-        - mv build/ios/iphoneos/audiowaveformFlutter.app ./Test.app
+        - mv build/ios/iphoneos/Runner.app ./Runner.app
         - mkdir Payload && cd Payload
-        - ln -s ../Test.app
+        - ln -s ../Runner.app
         - zip -r app.ipa Payload
       deploy:
         provider: releases
