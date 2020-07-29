@@ -59,6 +59,7 @@ jobs:
         - mv build/ios/iphoneos/Runner.app ./Runner.app
         - mkdir Payload && cd Payload
         - ln -s ../Runner.app
+        - cd ..
         - zip -r app.ipa Payload
       deploy:
         provider: releases
