@@ -15,7 +15,7 @@ jobs:
         - export ANDROID_HOME=$HOME/sdk
         - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
         - yes | sdkmanager --licenses --sdk_root="${ANDROID_HOME}"
-        - sdkmanager --install "emulator" "tools" "platform-tools" > /dev/null
+        - sdkmanager --install "emulator" "tools" "platform-tools"
         - sdkmanager --list | head -15
         - sdkmanager --install "build-tools;25.0.2" "platforms;android-25" > /dev/null
         - sdkmanager --install "system-images;android-25;default;x86" > /dev/null
