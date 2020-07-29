@@ -15,10 +15,10 @@ jobs:
         - export ANDROID_HOME=$HOME/sdk
         - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
         - yes | sdkmanager --licenses --sdk_root="${ANDROID_HOME}"
-        - sdkmanager "emulator" "tools" "platform-tools" > /dev/null
+        - sdkmanager --install "emulator" "tools" "platform-tools" > /dev/null
         - sdkmanager --list | head -15
-        - sdkmanager "build-tools;25.0.2" "platforms;android-25" > /dev/null
-        - sdkmanager "system-images;android-22;default;x86" > /dev/null
+        - sdkmanager --install "build-tools;25.0.2" "platforms;android-25" > /dev/null
+        - sdkmanager --install "system-images;android-25;default;x86" > /dev/null
         - sdkmanager --list | head -15
         - echo no | avdmanager create avd --force -n test -k "system-images;android-$SYS;$ABI"
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
