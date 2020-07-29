@@ -1,13 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-
-import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:audiowaveformFlutter/audiowaveformFlutter.dart';
 import 'package:path_provider/path_provider.dart';
+
+
 
 void main() {
     runApp(MyApp());
@@ -20,6 +22,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
     String _platformVersion = 'Unknown';
+
+
 
     @override
     void initState() {
@@ -46,9 +50,9 @@ class _MyAppState extends State<MyApp> {
     }
 
     Future<void> bp() async {
-        print("ButtonPress");
+        log("AAAAAAAAAAAAAAAAAAA BUTTON PRESSED");
         File f = File(await _localPath + "/test.mp3");
-        print(f.path);
+        log (f.path);
         if (await f.exists()) {
             await f.delete();
         }
