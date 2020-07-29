@@ -15,6 +15,12 @@ jobs:
         - export ANDROID_HOME=$HOME/sdk
         - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
         - yes | sdkmanager --licenses --sdk_root="${ANDROID_HOME}"
+        - sdkmanager "emulator" "tools" "platform-tools" > /dev/null
+        - sdkmanager --list | head -15
+        - sdkmanager "build-tools;25.0.2" "platforms;android-25" > /dev/null
+        - sdkmanager "system-images;android-22;default;x86" > /dev/null
+        - sdkmanager --list | head -15
+        - echo no | avdmanager create avd --force -n test -k "system-images;android-$SYS;$ABI"
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         - export PATH=$PATH:$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/build-tools/28.0.3/
         - flutter doctor
@@ -22,6 +28,7 @@ jobs:
         - cd example/
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
         - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+        - flutter drive
     - os: osx
       name: apple
       if: branch = master
@@ -38,6 +45,9 @@ jobs:
         - brew unlink usbmuxd
         - brew link usbmuxd
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+      before_script:
+        - open -a Simulator
       script:
         - cd example/
         - ../flutter/bin/flutter build ios --release --no-codesign
+        - flutter drive
