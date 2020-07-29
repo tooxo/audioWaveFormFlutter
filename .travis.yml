@@ -51,8 +51,20 @@ jobs:
         - brew link usbmuxd
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         - sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-        - flutter/bin/flutter emulators -h
+        # - flutter/bin/flutter emulators -h
       script:
         - cd example/
-        - ../flutter/bin/flutter build ios --release --no-codesign
-        - ../flutter/bin/flutter drive
+        - ../flutter/bin/flutter build ios --debug --no-codesign
+        - ls build/ios/iphoneos/
+        - mv build/ios/iphoneos/audiowaveformFlutter.app ./Test.app
+        - mkdir Payload && cd Payload
+        - ln -s ../Test.app
+        - zip -r app.ipa Payload
+      deploy:
+        provider: releases
+        api_key: "$GITHUB_OAUTH"
+        file:
+          - app.ipa
+        skip_cleanup: true
+        on:
+          branch: master
