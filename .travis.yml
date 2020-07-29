@@ -33,6 +33,9 @@ jobs:
       name: apple
       if: branch = master
       osx_image: xcode11.5
+      xcode_workspace: TravisCIBlog.xcworkspace
+      xcode_scheme: TravisCIBlog
+      xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
       addons:
         homebrew:
           packages:
@@ -45,8 +48,6 @@ jobs:
         - brew unlink usbmuxd
         - brew link usbmuxd
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-      before_script:
-        - open -a Simulator
       script:
         - cd example/
         - ../flutter/bin/flutter build ios --release --no-codesign
