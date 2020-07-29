@@ -51,4 +51,4 @@ jobs:
       script:
         - cd example/
         - ../flutter/bin/flutter build ios --release --no-codesign
-        - flutter drive
+        - ../flutter/bin/flutter drive
