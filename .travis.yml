@@ -49,8 +49,7 @@ jobs:
         - brew link usbmuxd
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         - sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-        - sudo xcodebuild -license
-        - open -a Simulator
+        - ../flutter/bin/flutter emulators -h
       script:
         - cd example/
         - ../flutter/bin/flutter build ios --release --no-codesign
