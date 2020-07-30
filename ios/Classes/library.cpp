@@ -53,11 +53,12 @@ const char *extractWaveData(const char *fileName) {
     ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << length
        << R"(,"data":[)";
     int f = 0;
-    for (int o : avs) {
+    /*for (int o : avs) {
         ss << std::to_string(o);
         if (f < avs.size() - 1) ss << ",";
         f++;
-    }
+    }*/
+    ss << "123";
     ss << "]}";
 
     const std::string tmp = ss.str();
