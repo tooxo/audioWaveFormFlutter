@@ -47,6 +47,7 @@ const char *extractWaveData(const char *fileName) {
         avs.emplace_back(mn);
     }
     free(info.buffer);
+    return "The Actions were successful.";
     std::string length = std::to_string(avs.size());
 
     std::stringstream ss;
