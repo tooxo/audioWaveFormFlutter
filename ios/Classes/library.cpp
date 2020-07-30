@@ -26,7 +26,7 @@ const char *extractWaveData(const char *fileName) {
     int mx = std::numeric_limits<int>::infinity() * -1;
 
 
-    for (int i = 0; i < info.samples; i += 2) {
+    for (int i = 0; i < info.samples; i ++) {
         int t = info.buffer[i];
         if (t == 0) {
             continue;
