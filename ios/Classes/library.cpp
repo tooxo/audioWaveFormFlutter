@@ -11,7 +11,7 @@
 #include <limits>
 #include <sstream>
 
-const char* extractWaveData(const char *fileName) {
+const char *extractWaveData(const char *fileName) {
     static mp3dec_t mp3d;
     mp3dec_file_info_t info;
     mp3dec_init(&mp3d);
@@ -26,7 +26,7 @@ const char* extractWaveData(const char *fileName) {
     int mx = std::numeric_limits<int>::infinity() * -1;
 
 
-    for (int i = 0; i < info.samples; i++) {
+    for (int i = 0; i < info.samples; i += 2) {
         int t = info.buffer[i];
         if (t == 0) {
             continue;
@@ -45,22 +45,20 @@ const char* extractWaveData(const char *fileName) {
     if (_l > 0) {
         avs.emplace_back(mx);
         avs.emplace_back(mn);
-        mn = std::numeric_limits<int>::infinity();
-        mx = std::numeric_limits<int>::infinity() * -1;
     }
     free(info.buffer);
-    std::string length = std::to_string(avs.size() / 2);
+    std::string length = std::to_string(avs.size());
 
     std::stringstream ss;
-    ss << "[";
+    ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << length
+       << R"(,"data":[)";
     int f = 0;
     for (int o : avs) {
         ss << std::to_string(o);
         if (f < avs.size() - 1) ss << ",";
         f++;
     }
-    ss << "]";
+    ss << "]}";
 
-    return (R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" + length +
-           R"(,"data":)" + ss.str() + "}").c_str();
+    return ss.str().c_str();
 }
