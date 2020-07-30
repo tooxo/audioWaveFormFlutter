@@ -73,7 +73,8 @@ class _MyAppState extends State<MyApp> {
       _platformVersion = AudiowaveformFlutter.audioWaveForm(f.path);
     } catch (e, stacktrace) {
       setState(() {
-        _platformVersion = StackTrace.current.toString();
+        _platformVersion =
+            e.toString() + "            " + stacktrace.toString();
       });
     }
 
