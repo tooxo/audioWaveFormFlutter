@@ -63,8 +63,6 @@ const char *extractWaveData(const char *fileName) {
     const std::string tmp = ss.str();
     const char* c_str = tmp.c_str();
 
-    return "the problem lies in return";
-
     return c_str;
 }
 
