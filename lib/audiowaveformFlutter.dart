@@ -24,6 +24,13 @@ class AudiowaveformFlutter {
             .lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>(
                 "extract_wave_data")
             .asFunction();
-    return Utf8.fromUtf8(nativeWaveForm(Utf8.toUtf8(inputPath)));
+
+    dynamic test =nativeWaveForm(Utf8.toUtf8(inputPath));
+    print(test);
+    print(Utf8.strlen(test));
+
+    print(Utf8.fromUtf8(test));
+
+    return Utf8.fromUtf8(test);
   }
 }

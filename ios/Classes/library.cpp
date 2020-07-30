@@ -10,7 +10,7 @@
 #include <list>
 #include <limits>
 #include <sstream>
-
+ 
 const char *extractWaveData(const char *fileName) {
     static mp3dec_t mp3d;
     mp3dec_file_info_t info;
@@ -19,14 +19,14 @@ const char *extractWaveData(const char *fileName) {
     if (error) {
         return "{}";
     }
-
+ 
     std::list<double> avs = std::list<double>();
     int _l = 0;
     int mn = std::numeric_limits<int>::infinity();
     int mx = std::numeric_limits<int>::infinity() * -1;
-
-
-    for (int i = 0; i < info.samples; i ++) {
+ 
+ 
+    for (int i = 0; i < info.samples; i++) {
         int t = info.buffer[i];
         if (t == 0) {
             continue;
@@ -48,22 +48,24 @@ const char *extractWaveData(const char *fileName) {
     }
     free(info.buffer);
     std::string length = std::to_string(avs.size());
-
+ 
     std::stringstream ss;
     ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << length
        << R"(,"data":[)";
     int f = 0;
-    /*for (int o : avs) {
+    for (int o : avs) {
         ss << std::to_string(o);
         if (f < avs.size() - 1) ss << ",";
         f++;
-    }*/
-    ss << "123";
+    }
     ss << "]}";
-
-    const std::string tmp = ss.str();
-    const char* c_str = tmp.c_str();
-
-    return c_str;
+ 
+    if (ss.str().find('\000') != std::string::npos) {
+        return "AAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    } else {
+        const std::string tmp = ss.str();
+        const char *c_str = tmp.c_str();
+ 
+        return c_str;
+    }
 }
-
