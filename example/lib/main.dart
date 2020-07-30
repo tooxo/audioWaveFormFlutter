@@ -87,27 +87,28 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            txt,
+          appBar: AppBar(
+            title: Text(
+              txt,
+            ),
           ),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              Text(
-                _platformVersion,
-                key: Key("w"),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    _platformVersion,
+                    key: Key("w"),
+                  ),
+                  FlatButton(
+                    child: Text("aaa"),
+                    key: Key("f"),
+                    onPressed: bp,
+                  )
+                ],
               ),
-              FlatButton(
-                child: Text("aaa"),
-                key: Key("f"),
-                onPressed: bp,
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
+          )),
     );
   }
 }
