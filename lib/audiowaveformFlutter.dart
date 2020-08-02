@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ffi/ffi.dart';
 import 'package:flutter/services.dart';
 import 'dart:ffi'; // For FFI
@@ -13,24 +11,14 @@ class AudiowaveformFlutter {
   static const MethodChannel _channel =
       const MethodChannel('audiowaveformFlutter');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
+  static final Pointer<Utf8> Function(Pointer<Utf8> fileName) nativeWaveForm =
+      nativeAddLib
+          .lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>(
+              "extract_wave_data")
+          .asFunction();
 
   static String audioWaveForm(String inputPath) {
-    final Pointer<Utf8> Function(Pointer<Utf8> fileName) nativeWaveForm =
-        nativeAddLib
-            .lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>(
-                "extract_wave_data")
-            .asFunction();
-
-    dynamic test =nativeWaveForm(Utf8.toUtf8(inputPath));
-    print(test);
-    print(Utf8.strlen(test));
-
-    print(Utf8.fromUtf8(test));
-
+    dynamic test = nativeWaveForm(Utf8.toUtf8(inputPath));
     return Utf8.fromUtf8(test);
   }
 }

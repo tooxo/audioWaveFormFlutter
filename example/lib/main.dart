@@ -1,11 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:logging/logging.dart';
 import 'package:audiowaveformFlutter/audiowaveformFlutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -23,22 +21,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    initPlatformState();
     super.initState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    String r = (AudiowaveformFlutter.audioWaveForm("test"));
-
-    setState(() {
-      _platformVersion = r;
-    });
   }
 
   Future<String> get _localPath async {
@@ -46,15 +29,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> bp() async {
-    log("AAAAAAAAAAAAAAAAAAA BUTTON PRESSED");
-    setState(() {
-      _platformVersion = " AAAAAAAAAAAAAAAAAAA BUTTOTN PRESSED";
-    });
     File f = File(await _localPath + "/test.mp3");
-    log(f.path);
-    setState(() {
-      _platformVersion = f.path;
-    });
     if (await f.exists()) {
       await f.delete();
     }
@@ -64,11 +39,6 @@ class _MyAppState extends State<MyApp> {
         "https://p.scdn.co/mp3-preview/546cc859633ce69e1b27f9cf22e64f4d9f80b2f4");
     await f.writeAsBytes(response.bodyBytes);
 
-    setState(() {
-      _platformVersion = response.statusCode.toString();
-    });
-
-    print(response.statusCode);
     try {
       _platformVersion = AudiowaveformFlutter.audioWaveForm(f.path);
     } catch (e, stacktrace) {
