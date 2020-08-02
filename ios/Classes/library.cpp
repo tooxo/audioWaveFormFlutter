@@ -59,13 +59,9 @@ const char *extractWaveData(const char *fileName) {
         f++;
     }
     ss << "]}";
- 
-    if (ss.str().find('\000') != std::string::npos) {
-        return "AAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    } else {
-        const std::string tmp = ss.str();
-        const char *c_str = tmp.c_str();
- 
-        return c_str;
-    }
+
+    const std::string tmp = ss.str();
+    const char *c_str = tmp.c_str();
+
+    return c_str;
 }

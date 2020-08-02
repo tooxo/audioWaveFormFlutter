@@ -7,7 +7,6 @@
 // https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
 #import "audiowaveformFlutter-Swift.h"
 #endif
-
 @implementation AudiowaveformFlutterPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   [SwiftAudiowaveformFlutterPlugin registerWithRegistrar:registrar];

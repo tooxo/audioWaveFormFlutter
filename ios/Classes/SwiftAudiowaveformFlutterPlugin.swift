@@ -11,8 +11,4 @@ public class SwiftAudiowaveformFlutterPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     result("iOS " + UIDevice.current.systemVersion)
   }
-
-  public func dummy(){
-    extractWaveData("")
-  }
 }
