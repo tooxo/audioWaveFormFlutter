@@ -17,9 +17,9 @@ const char* extractWaveData(const char *fileName) {
     mp3dec_file_info_t info;
     mp3dec_init(&mp3d);
     bool error = mp3dec_load(&mp3d, fileName, &info, nullptr, nullptr);
-    //if (error) {
-    //    return "{}";
-    //}
+    if (error) {
+        return "{}";
+    }
  
     std::list<int> avs = std::list<int>();
     int _l = 0;
