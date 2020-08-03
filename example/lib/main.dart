@@ -39,14 +39,17 @@ class _MyAppState extends State<MyApp> {
         "https://p.scdn.co/mp3-preview/546cc859633ce69e1b27f9cf22e64f4d9f80b2f4");
     await f.writeAsBytes(response.bodyBytes);
 
+
     try {
-      _platformVersion = AudiowaveformFlutter.audioWaveForm(f.path);
+      _platformVersion = await compute(AudiowaveformFlutter.audioWaveForm, f.path);
     } catch (e, stacktrace) {
+      print("An Error Occured.");
       setState(() {
         _platformVersion =
             e.toString() + "            " + stacktrace.toString();
       });
     }
+
 
     txt = "done";
     setState(() {});

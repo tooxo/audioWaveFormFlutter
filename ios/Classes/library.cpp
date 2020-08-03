@@ -6,25 +6,25 @@
 #define MINIMP3_ENABLE_RING 0      /* enable hardware magic ring buffer if available, to make less input buffer memmove(s) in callback IO mode */
 
 #include <iostream>
-#include "library.h"
 #include <list>
 #include <limits>
 #include <sstream>
+#include "minimp3_ex.h"
  
-const char *extractWaveData(const char *fileName) {
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+const char* extractWaveData(const char *fileName) {
     static mp3dec_t mp3d;
     mp3dec_file_info_t info;
     mp3dec_init(&mp3d);
     bool error = mp3dec_load(&mp3d, fileName, &info, nullptr, nullptr);
-    if (error) {
-        return "{}";
-    }
+    //if (error) {
+    //    return "{}";
+    //}
  
-    std::list<double> avs = std::list<double>();
+    std::list<int> avs = std::list<int>();
     int _l = 0;
     int mn = std::numeric_limits<int>::infinity();
     int mx = std::numeric_limits<int>::infinity() * -1;
- 
  
     for (int i = 0; i < info.samples; i++) {
         int t = info.buffer[i];
@@ -47,21 +47,20 @@ const char *extractWaveData(const char *fileName) {
         avs.emplace_back(mn);
     }
     free(info.buffer);
-    std::string length = std::to_string(avs.size());
  
     std::stringstream ss;
-    ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << length
-       << R"(,"data":[)";
+    ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << std::to_string(avs.size()) << R"(,"data":[)";
     int f = 0;
-    for (int o : avs) {
-        ss << std::to_string(o);
-        if (f < avs.size() - 1) ss << ",";
-        f++;
+    for (int num : avs){
+        ss << std::to_string(num);
+        if (f < avs.size() -1) ss << ",";
+        ++f;
     }
     ss << "]}";
+    
+    std::string temp_string = ss.str();
+    char* s = new char[temp_string.length() + 1];
+    temp_string.copy(s, temp_string.length()+ 1);
 
-    const std::string tmp = ss.str();
-    const char *c_str = tmp.c_str();
-
-    return c_str;
+    return s;
 }

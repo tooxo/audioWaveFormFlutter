@@ -1,24 +1,21 @@
 import 'package:ffi/ffi.dart';
-import 'package:flutter/services.dart';
 import 'dart:ffi'; // For FFI
 import 'dart:io' show Platform;
 
 final DynamicLibrary nativeAddLib = Platform.isAndroid
-    ? DynamicLibrary.open("libnative_add.so")
+    ? DynamicLibrary.open("waveform.so")
     : DynamicLibrary.process();
 
 class AudiowaveformFlutter {
-  static const MethodChannel _channel =
-      const MethodChannel('audiowaveformFlutter');
-
   static final Pointer<Utf8> Function(Pointer<Utf8> fileName) nativeWaveForm =
       nativeAddLib
           .lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>(
-              "extract_wave_data")
+              "extractWaveData")
           .asFunction();
 
   static String audioWaveForm(String inputPath) {
-    dynamic test = nativeWaveForm(Utf8.toUtf8(inputPath));
+    Pointer<Utf8> test = nativeWaveForm(Utf8.toUtf8(inputPath));
     return Utf8.fromUtf8(test);
   }
+
 }
