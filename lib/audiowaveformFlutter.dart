@@ -14,8 +14,8 @@ class AudiowaveformFlutter {
           .asFunction();
 
   static String audioWaveForm(String inputPath) {
-    Pointer<Utf8> test = _nativeWaveForm(Utf8.toUtf8(inputPath));
-    return Utf8.fromUtf8(test);
+    Pointer<Utf8> test = _nativeWaveForm(inputPath.toNativeUtf8());
+    return test.toDartString();
   }
 
 }
