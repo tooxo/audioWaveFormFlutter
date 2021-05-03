@@ -56,7 +56,7 @@ const char* extractWaveData(const char *fileName) {
         if (f < avs.size() -1) ss << ",";
         ++f;
     }
-    ss << "]}";
+    ss << "]}\0";
     
     std::string temp_string = ss.str();
     char* s = new char[temp_string.length() + 1];
