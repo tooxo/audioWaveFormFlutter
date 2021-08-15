@@ -48,7 +48,7 @@ const void extractWaveData(const char *fileName, const char *outputFileName) {
         avs.emplace_back(mx);
         avs.emplace_back(mn);
     }
-    // free(info.buffer);
+    free(info.buffer);
 
     std::ofstream out_file;
     out_file.open(outputFileName);
