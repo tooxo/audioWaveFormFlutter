@@ -7,15 +7,22 @@ final DynamicLibrary nativeAddLib = Platform.isAndroid
     : DynamicLibrary.process();
 
 class AudiowaveformFlutter {
-  static final Pointer<Utf8> Function(Pointer<Utf8> fileName) _nativeWaveForm =
-      nativeAddLib
-          .lookup<NativeFunction<Pointer<Utf8> Function(Pointer<Utf8>)>>(
+  static final void Function(
+          Pointer<Utf8> fileName, Pointer<Utf8> outputFileName)
+      _nativeWaveForm = nativeAddLib
+          .lookup<NativeFunction<Void Function(Pointer<Utf8>, Pointer<Utf8>)>>(
               "extractWaveData")
           .asFunction();
 
-  static String audioWaveForm(String inputPath) {
-    Pointer<Utf8> test = _nativeWaveForm(inputPath.toNativeUtf8());
-    return test.toDartString();
+  static void audioWaveForm(AudioWaveformConfig config) {
+    _nativeWaveForm(
+        config.inputPath.toNativeUtf8(), config.outputPath.toNativeUtf8());
   }
+}
 
+class AudioWaveformConfig {
+  String inputPath;
+  String outputPath;
+
+  AudioWaveformConfig(this.inputPath, this.outputPath);
 }

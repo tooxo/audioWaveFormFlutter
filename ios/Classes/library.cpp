@@ -6,26 +6,28 @@
 #define MINIMP3_ENABLE_RING 0      /* enable hardware magic ring buffer if available, to make less input buffer memmove(s) in callback IO mode */
 
 #include <iostream>
+#include <fstream>
 #include <list>
 #include <limits>
 #include <sstream>
 #include "minimp3_ex.h"
- 
+
 extern "C" __attribute__((visibility("default"))) __attribute__((used))
-const char* extractWaveData(const char *fileName) {
+const void extractWaveData(const char *fileName, const char *outputFileName) {
     static mp3dec_t mp3d;
     mp3dec_file_info_t info;
     mp3dec_init(&mp3d);
     bool error = mp3dec_load(&mp3d, fileName, &info, nullptr, nullptr);
+
     if (error) {
-        return "{}";
+        return;
     }
- 
+
     std::list<int> avs = std::list<int>();
     int _l = 0;
     int mn = std::numeric_limits<int>::infinity();
     int mx = std::numeric_limits<int>::infinity() * -1;
- 
+
     for (int i = 0; i < info.samples; i++) {
         int t = info.buffer[i];
         if (t == 0) {
@@ -46,21 +48,19 @@ const char* extractWaveData(const char *fileName) {
         avs.emplace_back(mx);
         avs.emplace_back(mn);
     }
-    free(info.buffer);
- 
-    std::stringstream ss;
-    ss << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)" << std::to_string(avs.size()) << R"(,"data":[)";
+    // free(info.buffer);
+
+    std::ofstream out_file;
+    out_file.open(outputFileName);
+
+    out_file << R"({"version":2,"channels":1,"sample_rate":44100,"samples_per_pixel":256,"bits":16,"length":)"
+             << std::to_string(avs.size()) << R"(,"data":[)";
     int f = 0;
-    for (int num : avs){
-        ss << std::to_string(num);
-        if (f < avs.size() -1) ss << ",";
+    for (int num : avs) {
+        out_file << std::to_string(num);
+        if (f < avs.size() - 1) out_file << ",";
         ++f;
     }
-    ss << "]}\0";
-    
-    std::string temp_string = ss.str();
-    char* s = new char[temp_string.length() + 1];
-    temp_string.copy(s, temp_string.length()+ 1);
-
-    return s;
+    out_file << "]}\0";
+    out_file.close();
 }
